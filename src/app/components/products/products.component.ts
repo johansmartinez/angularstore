@@ -18,6 +18,11 @@ import { ProductsService } from '../../services/products.service';
 export class ProductsComponent {
   myShoppingCart: Product[] = [];
   total = 0;
+  @Input() set productId(id: string | null){
+    if (id) {
+      this.onShowDetail(id);
+    }
+  };
   @Input() products: Product[] = [];
   showProductDetail = false;
   productChosen: Product | null = null;
@@ -42,7 +47,9 @@ export class ProductsComponent {
 
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
+    if (!this.showProductDetail) {
+      this.toggleProductDetail();
+    }
     this.productsService.getOne(id).subscribe(
       (data) => {
         this.productChosen = data;
